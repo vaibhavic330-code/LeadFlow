@@ -1,52 +1,3 @@
-// import {
-//   BrowserRouter,
-//   Routes,
-//   Route,
-//   Navigate,
-// } from "react-router-dom";
-
-// import Login from "./pages/Login";
-// import Register from "./pages/Register";
-// import Dashboard from "./pages/Dashboard";
-
-// function App() {
-//   return (
-//     <BrowserRouter>
-
-//       <Routes>
-
-//         <Route
-//           path="/"
-//           element={
-//             <Navigate
-//               to="/login"
-//               replace
-//             />
-//           }
-//         />
-
-//         <Route
-//           path="/login"
-//           element={<Login />}
-//         />
-
-//         <Route
-//           path="/register"
-//           element={<Register />}
-//         />
-
-//         <Route
-//           path="/dashboard"
-//           element={<Dashboard />}
-//         />
-
-//       </Routes>
-
-//     </BrowserRouter>
-//   );
-// }
-
-// export default App;
 import {
   BrowserRouter,
   Routes,
@@ -54,6 +5,7 @@ import {
   Navigate,
 } from "react-router-dom";
 
+import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
@@ -61,13 +13,16 @@ import Dashboard from "./pages/Dashboard";
 function App() {
   return (
     <BrowserRouter>
+
       <Routes>
 
+        {/* Landing Page */}
         <Route
           path="/"
-          element={<Navigate to="/login" replace />}
+          element={<Landing />}
         />
 
+        {/* Authentication */}
         <Route
           path="/login"
           element={<Login />}
@@ -78,12 +33,20 @@ function App() {
           element={<Register />}
         />
 
+        {/* Dashboard */}
         <Route
           path="/dashboard"
           element={<Dashboard />}
         />
 
+        {/* Unknown routes */}
+        <Route
+          path="*"
+          element={<Navigate to="/" replace />}
+        />
+
       </Routes>
+
     </BrowserRouter>
   );
 }

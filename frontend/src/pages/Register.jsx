@@ -33,25 +33,22 @@ function Register() {
         formData
       );
 
-      // Save token
       localStorage.setItem(
         "token",
         response.data.token
       );
 
-      // Save user
       localStorage.setItem(
         "user",
         JSON.stringify(response.data.user)
       );
 
-      // Go to dashboard
       navigate("/dashboard");
 
     } catch (error) {
       setError(
         error.response?.data?.message ||
-          "Registration failed"
+        "Registration failed. Please try again."
       );
     } finally {
       setLoading(false);
@@ -59,93 +56,193 @@ function Register() {
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-card">
+    <div className="auth-page">
 
-        <div className="auth-logo">
-          <div className="logo-icon">L</div>
+      {/* NAVBAR */}
+      <nav className="auth-navbar">
+
+        <Link
+          to="/"
+          className="auth-brand"
+        >
+
+          <div className="auth-brand-icon">
+            L
+          </div>
 
           <div>
-            <h1>LeadFlow</h1>
-            <p>AI-Powered Lead Management</p>
-          </div>
-        </div>
+            <strong>LeadFlow</strong>
 
-        <h2>Create Account</h2>
-
-        <p className="auth-description">
-          Create your LeadFlow account to manage your leads.
-        </p>
-
-        {error && (
-          <div className="error-message">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit}>
-
-          <div className="form-group">
-            <label>Name</label>
-
-            <input
-              type="text"
-              name="name"
-              placeholder="Enter your name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
+            <span>
+              Smart Lead Management
+            </span>
           </div>
 
-          <div className="form-group">
-            <label>Email</label>
+        </Link>
 
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
 
-          <div className="form-group">
-            <label>Password</label>
+        <div className="auth-nav-links">
 
-            <input
-              type="password"
-              name="password"
-              placeholder="Minimum 6 characters"
-              value={formData.password}
-              onChange={handleChange}
-              minLength="6"
-              required
-            />
-          </div>
+          <Link to="/">
+            Home
+          </Link>
 
-          <button
-            type="submit"
-            className="primary-button"
-            disabled={loading}
+          <a href="/#features">
+            Features
+          </a>
+
+          <a href="/#about">
+            About
+          </a>
+
+          <a href="/#founder">
+            Founder
+          </a>
+
+          <Link
+            to="/login"
+            className="auth-nav-login"
           >
-            {loading
-              ? "Creating Account..."
-              : "Create Account"}
-          </button>
-
-        </form>
-
-        <div className="auth-footer">
-          Already have an account?{" "}
-
-          <Link to="/login">
             Login
           </Link>
+
+        </div>
+
+      </nav>
+
+
+      {/* REGISTER */}
+      <div className="auth-container">
+
+        <div className="auth-card">
+
+          <div className="auth-logo">
+
+            <div className="logo-icon">
+              L
+            </div>
+
+            <div>
+              <h1>LeadFlow</h1>
+
+              <p>
+                Smart Lead Management
+              </p>
+            </div>
+
+          </div>
+
+
+          <h2>
+            Create Your Account 🚀
+          </h2>
+
+          <p className="auth-description">
+            Start managing your business leads
+            in one organized workspace.
+          </p>
+
+
+          {error && (
+            <div className="error-message">
+              {error}
+            </div>
+          )}
+
+
+          <form onSubmit={handleSubmit}>
+
+            <div className="form-group">
+
+              <label>
+                Full Name
+              </label>
+
+              <input
+                type="text"
+                name="name"
+                placeholder="Enter your full name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+
+            </div>
+
+
+            <div className="form-group">
+
+              <label>
+                Email Address
+              </label>
+
+              <input
+                type="email"
+                name="email"
+                placeholder="you@example.com"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+
+            </div>
+
+
+            <div className="form-group">
+
+              <label>
+                Password
+              </label>
+
+              <input
+                type="password"
+                name="password"
+                placeholder="Minimum 6 characters"
+                value={formData.password}
+                onChange={handleChange}
+                minLength="6"
+                required
+              />
+
+            </div>
+
+
+            <button
+              type="submit"
+              className="primary-button"
+              disabled={loading}
+            >
+              {loading
+                ? "Creating Account..."
+                : "Create LeadFlow Account →"}
+            </button>
+
+          </form>
+
+
+          <div className="auth-divider">
+            <span>Already using LeadFlow?</span>
+          </div>
+
+
+          <div className="auth-footer">
+
+            <Link to="/login">
+              Login to your account
+            </Link>
+
+          </div>
+
+
+          <div className="auth-security">
+            🔒 Your information is securely
+            handled by LeadFlow.
+          </div>
+
         </div>
 
       </div>
+
     </div>
   );
 }
