@@ -1,10 +1,10 @@
-
 import {
   BrowserRouter,
   Routes,
   Route,
   NavLink,
   Link,
+  Navigate,
 } from "react-router-dom";
 
 import "./App.css";
@@ -17,6 +17,7 @@ import Admin from "./pages/Admin";
 import Checkout from "./pages/Checkout";
 import StudentDashboard from "./pages/StudentDashboard";
 import Certificate from "./pages/Certificate";
+import LectureManagement from "./pages/LectureManagement";
 
 import { courses } from "./data";
 
@@ -51,6 +52,10 @@ const materials = [
   },
 ];
 
+/* =====================================================
+   HOME PAGE
+===================================================== */
+
 function Home() {
   return (
     <div className="website">
@@ -71,10 +76,7 @@ function Home() {
           </p>
 
           <div className="hero-actions">
-            <Link
-              to="/courses/python"
-              className="primary-btn"
-            >
+            <Link to="/courses/python" className="primary-btn">
               Start Learning →
             </Link>
 
@@ -117,7 +119,9 @@ if consistency:
         <div className="branch-grid">
           <div className="branch-card">
             <span>💻</span>
+
             <h3>Computer Science</h3>
+
             <p>
               Programming, DBMS, CN, OS and core CS subjects.
             </p>
@@ -125,7 +129,9 @@ if consistency:
 
           <div className="branch-card">
             <span>🤖</span>
+
             <h3>AI & Machine Learning</h3>
+
             <p>
               ML algorithms, Python, data processing and projects.
             </p>
@@ -133,7 +139,9 @@ if consistency:
 
           <div className="branch-card">
             <span>📊</span>
+
             <h3>Data Science</h3>
+
             <p>
               Python, statistics, data analysis and visualization.
             </p>
@@ -148,6 +156,7 @@ if consistency:
       >
         <div className="section-heading">
           <span>POPULAR COURSES</span>
+
           <h2>Learn Skills That Matter</h2>
         </div>
 
@@ -216,6 +225,7 @@ if consistency:
       >
         <div className="section-heading">
           <span>STUDY MATERIAL</span>
+
           <h2>Everything You Need To Prepare</h2>
         </div>
 
@@ -251,6 +261,7 @@ if consistency:
       >
         <div className="section-heading">
           <span>CAREER PREPARATION</span>
+
           <h2>
             Don't Just Learn. Build Your Career.
           </h2>
@@ -258,8 +269,11 @@ if consistency:
 
         <div className="career-grid">
           <div>📄 Resume Building</div>
+
           <div>💼 Interview Preparation</div>
+
           <div>🧠 Technical Skills</div>
+
           <div>🚀 Project Development</div>
         </div>
       </section>
@@ -285,6 +299,42 @@ if consistency:
 }
 
 /* =====================================================
+   PROTECTED ROUTE
+===================================================== */
+
+function ProtectedRoute({ children, role }) {
+  const loggedIn =
+    localStorage.getItem("techlearnLoggedIn") === "true";
+
+  const user = JSON.parse(
+    localStorage.getItem("techlearnUser")
+  );
+
+  /* User is not logged in */
+  if (!loggedIn || !user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  /* User does not have required role */
+  if (role && user.role !== role) {
+    /* Student trying to access admin */
+    if (user.role === "student") {
+      return <Navigate to="/student" replace />;
+    }
+
+    /* Admin trying to access student dashboard */
+    if (user.role === "admin") {
+      return <Navigate to="/admin" replace />;
+    }
+
+    /* Unknown role */
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+}
+
+/* =====================================================
    APP
 ===================================================== */
 
@@ -298,6 +348,7 @@ function App() {
           className="logo"
         >
           <span className="logo-icon">⚡</span>
+
           <strong>TechLearn</strong>
         </Link>
 
@@ -369,10 +420,24 @@ function App() {
           element={<Signup />}
         />
 
-        {/* ADMIN */}
+        {/* ================= ADMIN ================= */}
+
         <Route
           path="/admin"
-          element={<Admin />}
+          element={
+            <ProtectedRoute role="admin">
+              <Admin />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/lectures"
+          element={
+            <ProtectedRoute role="admin">
+              <LectureManagement />
+            </ProtectedRoute>
+          }
         />
 
         {/* CHECKOUT */}
@@ -381,10 +446,15 @@ function App() {
           element={<Checkout />}
         />
 
-        {/* STUDENT DASHBOARD */}
+        {/* ================= STUDENT ================= */}
+
         <Route
           path="/student"
-          element={<StudentDashboard />}
+          element={
+            <ProtectedRoute role="student">
+              <StudentDashboard />
+            </ProtectedRoute>
+          }
         />
 
         {/* CERTIFICATE */}
