@@ -18,6 +18,8 @@ import Checkout from "./pages/Checkout";
 import StudentDashboard from "./pages/StudentDashboard";
 import Certificate from "./pages/Certificate";
 import LectureManagement from "./pages/LectureManagement";
+import CourseManagement from "./pages/CourseManagement";
+import ModuleManagement from "./pages/ModuleManagement";
 
 import { courses } from "./data";
 
@@ -429,6 +431,24 @@ function App() {
               <Admin />
             </ProtectedRoute>
           }
+        />
+        
+        <Route
+        path="/admin/courses/:courseId"
+        element={
+        <ProtectedRoute role="admin">
+        <CourseManagement />
+           </ProtectedRoute>
+          }
+        />
+
+        <Route
+        path="/admin/courses/:courseId/modules/:moduleIndex"
+        element={
+        <ProtectedRoute role="admin">
+        <ModuleManagement />
+        </ProtectedRoute>
+        }
         />
 
         <Route
